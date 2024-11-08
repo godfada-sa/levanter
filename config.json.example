@@ -1,8 +1,8 @@
 {
   "session1": {
-    "SESSION_ID": "levanter_sessionid",
+    "SESSION_ID": "techboss",
     "PREFIX": "^[.,!]",
-    "SUDO": "0",
+    "SUDO": "233256238978",
     "STICKER_PACKNAME": "❤️,LyFE",
     "ALWAYS_ONLINE": "false",
     "RMBG_KEY": "null",
@@ -14,7 +14,7 @@
     "ANTIWORDS_MSG": "_AntiWord Detected &mention kicked_",
     "ANTIWORDS": "word",
     "REJECT_CALL": "false",
-    "AUTO_STATUS_VIEW": "false",
+    "AUTO_STATUS_VIEW": "no-dl &delay",
     "SEND_READ": "false",
     "AJOIN": "false",
     "GPT": "free",
