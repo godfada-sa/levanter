@@ -38,7 +38,7 @@ bot(
     match = match.match(/[\'\"](.*?)[\'\"]/gms)
     if (!match) {
       const filters = await getFilter('gfilter', message.id)
-      if (!filters)
+      if (!filters.length)
         return await message.send(`_Not set any filter_\n*Example gfilter 'hi' 'hello'*`)
       let msg = ''
       filters.map(({ pattern }) => {
@@ -67,7 +67,7 @@ bot(
     match = match.match(/[\'\"](.*?)[\'\"]/gms)
     if (!match) {
       const filters = await getFilter('pfilter', message.id)
-      if (!filters)
+      if (!filters.length)
         return await message.send(`_Not set any filter_\n*Example pfilter 'hi' 'hello'*`)
       let msg = ''
       filters.map(({ pattern }) => {
@@ -95,15 +95,14 @@ bot(
   },
   async (message, match) => {
     const filters = await getFilter('gfilter', message.id)
-    if (filters)
-      filters.map(async ({ pattern, regex, text }) => {
-        pattern = new RegExp(`(?:^|\\W)${pattern}(?:$|\\W)`, 'i')
-        if (pattern.test(message.text)) {
-          await message.send(text, {
-            quoted: message.data,
-          })
-        }
-      })
+    for (const { pattern, text } of filters) {
+      const regexPattern = new RegExp(`(?:^|\\W)${pattern}(?:$|\\W)`, 'i')
+      if (regexPattern.test(message.text)) {
+        return await message.send(text, {
+          quoted: message.data,
+        })
+      }
+    }
   }
 )
 
@@ -114,17 +113,15 @@ bot(
     type: 'pfilter',
   },
   async (message, match) => {
-    if (!message.isGroup) {
-      const filters = await getFilter('pfilter', message.id)
-      if (filters)
-        filters.map(async ({ pattern, regex, text }) => {
-          pattern = new RegExp(`(?:^|\\W)${pattern}(?:$|\\W)`, 'i')
-          if (pattern.test(message.text)) {
-            await message.send(text, {
-              quoted: message.data,
-            })
-          }
+    if (message.isGroup) return
+    const filters = await getFilter('pfilter', message.id)
+    for (const { pattern, text } of filters) {
+      const regexPattern = new RegExp(`(?:^|\\W)${pattern}(?:$|\\W)`, 'i')
+      if (regexPattern.test(message.text)) {
+        return await message.send(text, {
+          quoted: message.data,
         })
+      }
     }
   }
 )
